@@ -17,9 +17,9 @@ const player2 = {
         console.log(this.name + ' fight...')
     }
 }
+const $divArenas = document.querySelector('.arenas');
 function createPlayer(playerClass, playerObject) {
-    const $divArenas = document.querySelector('.arenas'),
-        $divPlayer = document.createElement('div'),
+    const $divPlayer = document.createElement('div'),
         $divProgressBar = document.createElement('div'),
         $divLife = document.createElement('div'),
         $divName = document.createElement('div'),
@@ -32,7 +32,7 @@ function createPlayer(playerClass, playerObject) {
     $divName.classList.add('name');
     $divCharacter.classList.add('character')
 
-    $divLife.style.width = '100%';
+    $divLife.style.width = `${playerObject.hp}%`;
     $divName.innerText = playerObject.name;
     $img.src = playerObject.img;
 
