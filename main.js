@@ -53,32 +53,36 @@ function createPlayer(playerObject) {
 }
 
 function gameOver(player) {
-    $divArenas.appendChild(playerLose(player))
+    $divArenas.appendChild(showPlayerWin(player))
     isGameOver = true;
     $randomButton.disabled = true;
 }
 
-function changeHP(player) {
-    if (isGameOver) return;
-    const $playerLife = document.querySelector(`.player${player.player} .life`);
-    const damage = Math.ceil(Math.random() * 10);
-    player.hp = player.hp <= 0 ? 0 : player.hp -= damage;
-    $playerLife.style.width = `${player.hp}%`;
-
-    if (player.hp === 0) gameOver(player);
+function generateDamage() {
+    return Math.ceil(Math.random() * 10);
 }
 
-function playerLose(player) {
-    const whoWin = player.player === 1 ? player2 : player1;
-    const $loseTitle = createElement('div', 'loseTitle');
-    $loseTitle.innerText = `${whoWin.name} win`;
+function changeHP(player) {
+    const $playerLife = document.querySelector(`.player${player.player} .life`);
+    player.hp = player.hp <= 0 ? 0 : player.hp -= generateDamage();
+    $playerLife.style.width = `${player.hp}%`;
+}
 
+function checkWinner(player) {
+    const whoWin = player.player === 1 ? player2 : player1;
+    if (player.hp === 0) gameOver(whoWin);
+}
+
+function showPlayerWin(player) {
+    const $loseTitle = createElement('div', 'loseTitle');
+    $loseTitle.innerText = `${player.name} win`;
     return $loseTitle;
 }
 
 $randomButton.addEventListener('click', function () {
     const whoAttack = Math.random() > 0.5 ? player1 : player2;
     changeHP(whoAttack);
+    checkWinner(whoAttack);
 })
 
 $divArenas.appendChild(createPlayer(player1));
